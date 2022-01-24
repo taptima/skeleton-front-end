@@ -3,15 +3,16 @@ import React, { Component, ComponentType, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import appContainerFactory from 'container/AppContainer';
 import User from 'domain/entity/app/User';
+import isServer from 'helper/common/isServer';
 import Logger from 'util/Logger';
+import { withContainerContext } from 'presentation/context/Container';
 import AppGlobalController from 'presentation/controller/AppGlobalController';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
-import { withContainerContext } from 'presentation/context/Container';
 import { PageContextT } from 'presentation/type/Page';
 import LayoutConfig from 'presentation/type/LayoutConfig';
 
 type PageInitialPropsT = {
-    appData: Record<string, unknown>;
+    appData?: Record<string, unknown>;
 };
 
 type OptionsT<Q> = {
@@ -60,7 +61,9 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
             const { appData } = props;
             const container = appContainerFactory.getInstance();
 
-            container.hydrateData(appData);
+            if (appData) {
+                container.hydrateData(appData);
+            }
         }
 
         public componentDidMount(): void {
@@ -96,6 +99,12 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
             await container.get(AppGlobalController).appInitialAction();
 
             if (getInitialProps) await getInitialProps(container, ctx);
+
+            if (!isServer()) {
+                // Repositories are already initialized above.
+                // No need to pass props on client.
+                return {};
+            }
 
             return {
                 appData: container.serializeData(),
