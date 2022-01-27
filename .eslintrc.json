@@ -1,6 +1,7 @@
 {
     "extends": [
         "plugin:@typescript-eslint/recommended",
+        "airbnb",
         "airbnb-typescript",
         "plugin:@next/next/recommended",
         "prettier"
@@ -45,6 +46,9 @@
     "rules": {
         "no-plusplus": "off",
         "import/no-unresolved": "off",
+        "react/require-default-props": "off",
+        "react/no-unused-prop-types": "warn",
+        "react/function-component-definition": "off",
         "@typescript-eslint/no-unused-vars": "warn",
         "import/order": [
             "warn",
