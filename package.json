@@ -16,7 +16,8 @@
         "lint-js-all": "yarn run lint-js \"src/**/*.{js,jsx,ts,tsx}\"",
         "lint-styles": "stylelint --config .stylelintrc.json",
         "lint-styles-all": "yarn run lint-styles \"src/**/*.{css,scss,js,jsx,ts,tsx}\"",
-        "lint": "yarn run lint-js-all && yarn run lint-styles-all && yarn format-all --check"
+        "lint": "yarn run lint-js-all && yarn run lint-styles-all && yarn format-all --check",
+        "prepare": "husky install"
     },
     "browserslist": [
         "last 1 Chrome major versions",
