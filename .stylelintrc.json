@@ -31,7 +31,15 @@
         "no-missing-end-of-source-newline": null,
         "unit-blacklist": ["rem"],
         "shorthand-property-no-redundant-values": true,
-        "selector-type-no-unknown": true,
+        "selector-type-no-unknown": [
+            true,
+            {
+                "ignoreTypes": [
+                    "/-styled-mixin/",
+                    "$dummyValue"
+                ]
+            }
+        ],
         "selector-pseudo-element-no-unknown": true,
         "selector-pseudo-class-no-unknown": true,
         "selector-no-vendor-prefix": true,

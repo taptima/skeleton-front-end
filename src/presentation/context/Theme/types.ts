@@ -1,24 +1,31 @@
-export enum ThemeType {
+export enum ThemeVariant {
     Light,
 }
 
-export type ThemeT = {
-    type: ThemeType;
-    colors: {
-        base: string;
-        text: string;
-    };
-    font: {
-        weight: {
-            regular: string;
-        };
-        family: {
-            base: string;
-        };
-    };
+export type ColorT = {
+    base: string;
+    text: string;
 };
 
-export type ContextT = {
-    themeType: ThemeType;
-    setThemeType: (themeType: ThemeType) => void;
+export type FontWeightT = {
+    regular: string;
+    bold: string;
+};
+
+export type FontFamilyT = {
+    base: string;
+};
+
+export type ThemeT = {
+    type: ThemeVariant;
+    colors: ColorT;
+    font: {
+        weight: FontWeightT;
+        family: FontFamilyT;
+    };
+    transition: {
+        fast: string;
+        normal: string;
+        slow: string;
+    };
 };

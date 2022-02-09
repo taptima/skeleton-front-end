@@ -1,18 +1,12 @@
-import { ThemeT, ThemeType } from 'presentation/context/Theme/types';
+import { ThemeT, ThemeVariant } from 'presentation/context/Theme/types';
+import themeBase from './themeBase';
 
 const light: ThemeT = {
-    type: ThemeType.Light,
+    ...themeBase,
+    type: ThemeVariant.Light,
     colors: {
         base: '#FFFFFF',
         text: '#000000',
-    },
-    font: {
-        family: {
-            base: 'Arial',
-        },
-        weight: {
-            regular: 'normal',
-        },
     },
 };
 

@@ -3,7 +3,7 @@ import SerializableRepository from 'framework/SerializableRepository';
 import isServer from 'helper/common/isServer';
 
 export default abstract class Container<
-    DataT extends Record<string, SerializableRepository> = Record<string, SerializableRepository>
+    DataT extends Record<string, SerializableRepository> = Record<string, SerializableRepository>,
 > extends BaseContainer {
     public parent: Container | null = null;
 

@@ -3,7 +3,7 @@ import { interfaces } from 'inversify';
 import Container from 'framework/Container';
 import ContainerFactory from 'framework/ContainerFactory';
 
-const ContainerContext = createContext((undefined as unknown) as Container);
+const ContainerContext = createContext(undefined as unknown as Container);
 
 export function withContainerContext(containerFactory: ContainerFactory) {
     return function WithContainerContext<P>(WrappedComponent: ComponentType<P>): ComponentType<P> {
