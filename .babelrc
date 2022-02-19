@@ -4,16 +4,16 @@
             "presets": ["next/babel"],
             "plugins": [
                 [
+                    "@babel/plugin-proposal-decorators",
+                    { "legacy": true }
+                ],
+                [
                     "@babel/plugin-proposal-class-properties",
                     { "loose": false }
                 ],
                 [
                     "@emotion",
                     { "labelFormat": "_[dirname]-[local]" }
-                ],
-                [
-                    "@babel/plugin-proposal-decorators",
-                    { "legacy": true }
                 ]
             ]
         },
@@ -21,16 +21,16 @@
             "presets": ["next/babel"],
             "plugins": [
                 [
+                    "@babel/plugin-proposal-decorators",
+                    { "legacy": true }
+                ],
+                [
                     "@babel/plugin-proposal-class-properties",
                     { "loose": false }
                 ],
                 [
                     "@emotion",
                     { "autoLabel": "never" }
-                ],
-                [
-                    "@babel/plugin-proposal-decorators",
-                    { "legacy": true }
                 ]
             ]
         }
