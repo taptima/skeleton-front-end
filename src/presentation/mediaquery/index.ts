@@ -3,9 +3,7 @@ import Breakpoint from './Breakpoint';
 
 const lower = (bp: Breakpoint): string => `(max-width: ${bp - 1}px)`;
 const greater = (bp: Breakpoint): string => `(min-width: ${bp}px)`;
-const between = (bpFrom: Breakpoint, bpTo: Breakpoint) => `${greater(bpFrom)} and ${lower(bpTo)}`;
-
-export const rule = {
+const rules = {
     lowerXs: lower(Breakpoint.Xs),
     lowerSm: lower(Breakpoint.Sm),
     lowerMd: lower(Breakpoint.Md),
@@ -16,11 +14,10 @@ export const rule = {
     greaterMd: greater(Breakpoint.Md),
     greaterLg: greater(Breakpoint.Lg),
     greaterXl: greater(Breakpoint.Xl),
-    betweenSmMd: between(Breakpoint.Sm, Breakpoint.Md),
-    betweenXsSm: between(Breakpoint.Xs, Breakpoint.Sm),
 };
 
-type RuleT = keyof typeof rule;
+type BreakpointKeyT = keyof typeof Breakpoint;
+type RuleT = keyof typeof rules;
 
 /**
  * @example
@@ -38,10 +35,10 @@ type RuleT = keyof typeof rule;
  *      }
  *  `;
  * */
-export const mq = (Object.keys(rule) as RuleT[]).reduce(
+export const mq = (Object.keys(rules) as RuleT[]).reduce(
     (acc, bp) => ({
         ...acc,
-        [bp]: `@media ${rule[bp]}`,
+        [bp]: `@media ${rules[bp]}`,
     }),
     {} as Record<RuleT, string>,
 );
@@ -69,3 +66,23 @@ export const hidden = (Object.keys(mq) as RuleT[]).reduce(
     }),
     {} as Record<RuleT, SerializedStyles>,
 );
+
+/**
+ * @example
+ *
+ * styled.div`
+ *     ${mqBetween('Sm', 'Md')} {
+ *         color: red;
+ *     }
+ * `
+ *
+ * // same as above
+ * styled.div`
+ *     @media (min-width: ${Breakpoint.Sm} and max-width: ${Breakpoint.Md}) {
+ *         color: red;
+ *     }
+ * `
+ * */
+export const mqBetween = (bpFrom: BreakpointKeyT, bpTo: BreakpointKeyT): string => {
+    return `@media ${greater(Breakpoint[bpFrom])} and ${lower(Breakpoint[bpTo])}`;
+};
