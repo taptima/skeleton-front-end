@@ -1,6 +1,12 @@
+import SerializedCssT from 'presentation/type/SerializedCssT';
+
+export type MainBlockConfigT = SerializedCssT & {
+    isWithContainer: boolean;
+};
+
 interface LayoutConfig {
-    // replace it depending on your project's needs
-    variant: 'standard' | 'private';
+    mainBlockConfig?: MainBlockConfigT;
+    isLocked?: boolean;
 }
 
 export default LayoutConfig;

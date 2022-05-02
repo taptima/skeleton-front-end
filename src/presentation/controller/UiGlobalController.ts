@@ -1,24 +1,42 @@
 import { injectable } from 'inversify';
 import ReactiveState from 'util/ReactiveState';
-import LayoutConfig from 'presentation/type/LayoutConfig';
+import LayoutConfig, { MainBlockConfigT } from 'presentation/type/LayoutConfig';
 
-const DEFAULT_UI_CONFIG: LayoutConfig = {
-    variant: 'standard',
+const MAIN_BLOCK_INITIAL_CONFIG: MainBlockConfigT = {
+    css: undefined,
+    isWithContainer: true,
 };
 
 @injectable()
 export default class UiGlobalController {
-    private readonly _config = new ReactiveState<LayoutConfig>(DEFAULT_UI_CONFIG);
-
-    public get uiConfig(): LayoutConfig {
-        return this._config.state;
+    public get isPrivacyLocked() {
+        return this._privacyLock.state;
     }
 
-    public setLayoutConfig = (config: LayoutConfig): void => {
-        this._config.state = config;
+    public get mainBlockConfig(): MainBlockConfigT {
+        return this._mainContentConfig.state;
+    }
+
+    public setIsPagePrivacyLocked = (isLocked: LayoutConfig['isLocked']): void => {
+        this._privacyLock.state = isLocked;
+    };
+
+    public setMainBlockConfig = (config?: MainBlockConfigT): void => {
+        this._mainContentConfig.state = config || MAIN_BLOCK_INITIAL_CONFIG;
     };
 
     public handleLayoutUpdateOnRouteChange = (config?: LayoutConfig): void => {
-        this.setLayoutConfig(config || DEFAULT_UI_CONFIG);
+        this.setIsPagePrivacyLocked(false);
+        const { mainBlockConfig } = config || {};
+
+        if (mainBlockConfig) {
+            this.setMainBlockConfig(mainBlockConfig);
+        }
     };
+
+    private readonly _privacyLock = new ReactiveState<LayoutConfig['isLocked']>(false);
+
+    private readonly _mainContentConfig = new ReactiveState<MainBlockConfigT>(
+        MAIN_BLOCK_INITIAL_CONFIG,
+    );
 }
