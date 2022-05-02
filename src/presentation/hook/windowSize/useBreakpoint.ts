@@ -4,16 +4,16 @@ import useWindowResize from 'presentation/hook/windowSize/useWindowResize';
 
 type BreakpointKeyT = keyof typeof Breakpoint;
 
-/**
- * TODO: Set biggest breakpoint on 11 and 16 lines and remove this annotation
- * */
+const breakpointKeys = Object.keys(Breakpoint) as BreakpointKeyT[];
+const lastBreakpointKey = breakpointKeys.at(-1) as BreakpointKeyT;
+
 export default function useBreakpoint(): Breakpoint {
-    const [breakpoint, setBreakpoint] = useState(Breakpoint.Xl);
+    const [breakpoint, setBreakpoint] = useState(Breakpoint[lastBreakpointKey]);
 
     const handleWindowResize = useCallback(() => {
-        const breakpointKeys = Object.keys(Breakpoint) as BreakpointKeyT[];
         const currentBreakpointKey =
-            breakpointKeys.find((bpKey) => window.innerWidth <= Breakpoint[bpKey]) || 'Xl';
+            breakpointKeys.find((bpKey) => window.innerWidth <= Breakpoint[bpKey]) ||
+            lastBreakpointKey;
 
         setBreakpoint(Breakpoint[currentBreakpointKey]);
     }, []);
