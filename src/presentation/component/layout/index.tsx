@@ -1,38 +1,26 @@
 import React, { FC } from 'react';
 import { Global } from '@emotion/react';
-import appContainerFactory from 'container/AppContainer';
+import { observer } from 'mobx-react';
+import { useService } from 'presentation/context/Container';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
 import globalCss from 'presentation/component/layout/common/globalCss';
-import { LayoutWrapper } from './styles';
+import { LayoutWrapper, Main } from './styles';
 
-/**
- * Warning!
- * Do not make multiple return statements.
- *
- * Usage example:
- * const { wrapperConfig, headerConfig, footerConfig } = uiConfig;
- *
- * return (
- *     <Wrapper {...wrapperConfig} {...restProps}>
- *         <Header {...headerConfig} />
- *         <Main>{children}</Main>
- *         <Footer {...footerConfig}/>
- *     </Wrapper>
- * );
- * */
-const Layout: FC = (props) => {
+const Layout: FC = observer((props) => {
     const { children } = props;
-    const container = appContainerFactory.getInstance();
-    const { uiConfig } = container.get(UiGlobalController);
-    const { variant } = uiConfig;
+    const { isPrivacyLocked, mainBlockConfig } = useService(UiGlobalController);
 
     return (
         <>
-            {variant === 'standard' && <LayoutWrapper>{children}</LayoutWrapper>}
-            {variant === 'private' && <h1>Доступ закрыт</h1>}
+            <LayoutWrapper>
+                {/* Header */}
+                {isPrivacyLocked && <h1>Доступ закрыт</h1>}
+                {!isPrivacyLocked && <Main {...mainBlockConfig}>{children}</Main>}
+                {/* Footer */}
+            </LayoutWrapper>
             <Global styles={globalCss} />
         </>
     );
-};
+});
 
 export default Layout;

@@ -41,7 +41,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
         const { user, clientSideInitialAction } = useService(AppGlobalController);
         const { setIsPagePrivacyLocked, handleLayoutUpdateOnRouteChange } =
             useService(UiGlobalController);
-        const isPageAllowedForUser = !roles || !roles.includes(user.role);
+        const isPageAllowedForUser = !roles || roles.includes(user.role);
 
         useEffect(() => {
             if (appData) {
@@ -82,7 +82,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
     };
 
     if (getInitialProps || withInitialProps) {
-        Page.getInitialProps = async (ctx) => {
+        Page.getInitialProps = async (ctx: PageContextT<Q>) => {
             container = appContainerFactory.getInstance(true);
 
             if (getInitialProps) await getInitialProps(container, ctx);

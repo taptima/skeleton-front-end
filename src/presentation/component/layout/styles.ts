@@ -1,4 +1,19 @@
 import styled from '@emotion/styled';
+import { MainBlockConfigT } from 'presentation/type/LayoutConfig';
 
-// eslint-disable-next-line import/prefer-default-export
-export const LayoutWrapper = styled.div();
+export const LayoutWrapper = styled.div`
+    --main-gutter: 30px;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+`;
+
+export const Main = styled.main<MainBlockConfigT>`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: ${({ isWithContainer }) => (isWithContainer ? 'var(--main-gutter)' : 0)};
+    padding-right: ${({ isWithContainer }) => (isWithContainer ? 'var(--main-gutter)' : 0)};
+    ${({ css: mainCss }) => mainCss}
+`;
