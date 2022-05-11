@@ -12,7 +12,7 @@ export default function useBreakpoint(): Breakpoint {
 
     const handleWindowResize = useCallback(() => {
         const currentBreakpointKey =
-            breakpointKeys.find((bpKey) => window.innerWidth <= Breakpoint[bpKey]) ||
+            breakpointKeys.find((bpKey) => window.innerWidth <= Breakpoint[bpKey] - 1) ||
             lastBreakpointKey;
 
         setBreakpoint(Breakpoint[currentBreakpointKey]);
