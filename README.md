@@ -45,13 +45,13 @@ variables bellow. Run:
     ```
 
 ## Pre-configured environment variables
-1. `NEXT_PUBLIC_API_BASE_URL` — useful for configuring base URL for any
-API calls.
-2. `NEXT_PUBLIC_ASSETS_VERSION` — version of public assets. Can be used
-to reset browser cache of any assets.
-3. `NEXT_PUBLIC_SENTRY_DSN` — used to log errors to Sentry.
+1. `NEXT_PUBLIC_API_BASE_URL` — configure base URL for any API calls.
+2. `LOCAL_API_BASE_URL` - URL for API calls on server side that used to avoid request roundtrip and DNS resolving (optional).
+3. `NEXT_PUBLIC_ASSETS_VERSION` — version of public assets. Can be used
+to reset browser cache of any assets (optional).
+4. `NEXT_PUBLIC_SENTRY_DSN` — used to log errors to Sentry (optional).
 
 **Sentry**
 1. Add NEXT_PUBLIC_SENTRY_DSN to `.env` file
-2. `sentry-cli login` — to login through browser or enter auth token
+2. Run `sentry-cli login` — to login through browser or enter auth token
 3. Fill `defaults.project` field in `sentry.properties` file
