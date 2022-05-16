@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import NextErrorComponent, { ErrorProps } from 'next/error';
 import HttpStatusCode from 'constant/HttpStatusCode';
 import isServer from 'helper/common/isServer';
@@ -19,11 +20,10 @@ export default function createErrorPage(predefinedStatusCode?: HttpStatusCode) {
 
     const Page: NextPage<AppErrorProps> = (props) => {
         const { statusCode, err } = props;
+        const { asPath } = useRouter();
 
         useEffect(() => {
-            if (hasPredefinedStatus && err) {
-                Logger.handleError('On error page, client side', err);
-            }
+            Logger.handleError(`On error page, client side ${asPath} page`, err);
         }, []);
 
         return <ErrorPage statusCode={predefinedStatusCode || statusCode} />;
@@ -37,7 +37,16 @@ export default function createErrorPage(predefinedStatusCode?: HttpStatusCode) {
                 ...errorProps,
             };
 
-            Logger.handleError(`On error page, ${isServer() ? 'server' : 'client'}  side`, ctx.err);
+            if (ctx.err) {
+                Logger.handleError(
+                    `On error page, ${isServer() ? 'server' : 'client'} side`,
+                    ctx.err,
+                );
+
+                return errorInitialProps;
+            }
+
+            Logger.handleError(`_error.tsx getInitialProps missing data at path: ${ctx.asPath}`);
 
             return errorInitialProps;
         };
