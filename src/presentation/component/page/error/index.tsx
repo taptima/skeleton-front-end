@@ -1,5 +1,13 @@
 import { FC } from 'react';
+import NextLink from 'next/link';
+import { HOME } from 'constant/route';
 import HttpStatusCode from 'constant/HttpStatusCode';
+import { Wrapper, Title, Link } from './styles';
+
+const MAP_ERROR_TO_MESSAGE: Record<HttpStatusCode, string> = {
+    [HttpStatusCode.InternalServerError]: 'Возникла ошибка, попробуйте зайти позже',
+    [HttpStatusCode.NotFound]: 'Страница не найдена или еще не создана',
+};
 
 type PropsT = {
     statusCode: HttpStatusCode;
@@ -7,15 +15,14 @@ type PropsT = {
 
 const ErrorPage: FC<PropsT> = (props) => {
     const { statusCode } = props;
-    const message =
-        statusCode === HttpStatusCode.NotFound
-            ? 'Страница не найдена или еще не создана'
-            : 'Что-то пошло не так';
 
     return (
-        <div>
-            <h1>{message}</h1>
-        </div>
+        <Wrapper>
+            <Title>{MAP_ERROR_TO_MESSAGE[statusCode] || 'Что-то пошло не так'}</Title>
+            <NextLink href={HOME} passHref>
+                <Link>На главную</Link>
+            </NextLink>
+        </Wrapper>
     );
 };
 

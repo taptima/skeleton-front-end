@@ -6,6 +6,7 @@ import { enableStaticRendering } from 'mobx-react';
 import isServer from 'helper/common/isServer';
 import Layout from 'presentation/component/layout';
 import { ThemeProvider } from 'presentation/context/Theme';
+import { AppContextProvider } from 'presentation/context/Container';
 
 enableStaticRendering(isServer());
 
@@ -27,9 +28,11 @@ function App(props: AppProps): ReactElement {
                 <title>{TITLE}</title>
             </Head>
             <ThemeProvider>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
+                <AppContextProvider>
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
+                </AppContextProvider>
             </ThemeProvider>
         </>
     );

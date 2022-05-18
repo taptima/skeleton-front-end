@@ -1,11 +1,12 @@
 import { ParsedUrlQuery } from 'querystring';
-import React, { Component, ComponentType, useEffect } from 'react';
+import { ComponentType, useEffect } from 'react';
+import { NextPage } from 'next';
 import { observer } from 'mobx-react';
 import appContainerFactory from 'container/AppContainer';
 import User from 'domain/entity/app/User';
 import isServer from 'helper/common/isServer';
 import Logger from 'util/Logger';
-import { withContainerContext } from 'presentation/context/Container';
+import { useService } from 'presentation/context/Container';
 import AppGlobalController from 'presentation/controller/AppGlobalController';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
 import { PageContextT } from 'presentation/type/Page';
@@ -33,12 +34,34 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
     options: OptionsT<Q> = {},
 ) {
     const { effectCallback, getInitialProps, withInitialProps, roles, layoutConfig } = options;
-    const withAppContainerContext = withContainerContext(appContainerFactory);
+    let container = appContainerFactory.getInstance();
 
-    const OriginalPage = withAppContainerContext(() => {
+    const Page: NextPage<PageInitialPropsT> = (props) => {
+        const { appData } = props;
+        const { user, clientSideInitialAction } = useService(AppGlobalController);
+        const { setIsPagePrivacyLocked, handleLayoutUpdateOnRouteChange } =
+            useService(UiGlobalController);
+        const isPageAllowedForUser = !roles || roles.includes(user.role);
+
         useEffect(() => {
-            const container = appContainerFactory.getInstance();
-            container.get(UiGlobalController).handleLayoutUpdateOnRouteChange(layoutConfig);
+            if (appData) {
+                container.hydrateData(appData);
+            }
+
+            clientSideInitialAction()
+                .then(() => {})
+                .catch((e) => {
+                    Logger.handleError(
+                        'Unhandled error in "createPage" clientSideInitialAction',
+                        e,
+                    );
+                });
+
+            if (!isPageAllowedForUser) {
+                return;
+            }
+
+            handleLayoutUpdateOnRouteChange(layoutConfig);
 
             if (effectCallback) {
                 effectCallback(container)
@@ -49,59 +72,21 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
             }
         }, []);
 
+        useEffect(() => {
+            setIsPagePrivacyLocked(!isPageAllowedForUser);
+        }, [isPageAllowedForUser]);
+
         return <PageComponent />;
-    });
-
-    class Page extends Component<PageInitialPropsT> {
-        static getInitialProps: (ctx: PageContextT<Q>) => Promise<PageInitialPropsT>;
-
-        constructor(props: PageInitialPropsT) {
-            super(props);
-
-            const { appData } = props;
-            const container = appContainerFactory.getInstance();
-
-            if (appData) {
-                container.hydrateData(appData);
-            }
-        }
-
-        public componentDidMount(): void {
-            const container = appContainerFactory.getInstance();
-            container
-                .get(AppGlobalController)
-                .clientSideInitialAction()
-                .then(() => {})
-                .catch((e) => {
-                    Logger.handleError(
-                        'Unhandled error in "createPage" clientSideInitialAction',
-                        e,
-                    );
-                });
-        }
-
-        render() {
-            const container = appContainerFactory.getInstance();
-            const { user } = container.get(AppGlobalController);
-            const { setLayoutConfig } = container.get(UiGlobalController);
-
-            if (!roles || roles.includes(user.role)) {
-                setLayoutConfig({ variant: 'private' });
-            }
-
-            return <OriginalPage />;
-        }
-    }
+    };
 
     if (getInitialProps || withInitialProps) {
-        Page.getInitialProps = async (ctx) => {
-            const container = appContainerFactory.getInstance(true);
-            await container.get(AppGlobalController).appInitialAction();
+        Page.getInitialProps = async (ctx: PageContextT<Q>) => {
+            container = appContainerFactory.getInstance(true);
 
             if (getInitialProps) await getInitialProps(container, ctx);
 
             if (!isServer()) {
-                // Repositories are already initialized above.
+                // Repositories already initialized above.
                 // No need to pass props on client.
                 return {};
             }
