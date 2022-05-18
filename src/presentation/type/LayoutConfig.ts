@@ -1,8 +1,6 @@
 import SerializedCssT from 'presentation/type/SerializedCssT';
 
-export type MainBlockConfigT = SerializedCssT & {
-    isWithContainer: boolean;
-};
+export type MainBlockConfigT = SerializedCssT;
 
 interface LayoutConfig {
     mainBlockConfig?: MainBlockConfigT;

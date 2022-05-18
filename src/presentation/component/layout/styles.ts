@@ -13,7 +13,6 @@ export const Main = styled.main<MainBlockConfigT>`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding-left: ${({ isWithContainer }) => (isWithContainer ? 'var(--main-gutter)' : 0)};
-    padding-right: ${({ isWithContainer }) => (isWithContainer ? 'var(--main-gutter)' : 0)};
+
     ${({ css: mainCss }) => mainCss}
 `;

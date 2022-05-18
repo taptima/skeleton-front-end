@@ -73,10 +73,8 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
         }, []);
 
         useEffect(() => {
-            if (!isPageAllowedForUser) {
-                setIsPagePrivacyLocked(true);
-            }
-        }, [roles, user]);
+            setIsPagePrivacyLocked(!isPageAllowedForUser);
+        }, [isPageAllowedForUser]);
 
         return <PageComponent />;
     };

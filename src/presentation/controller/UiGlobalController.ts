@@ -4,11 +4,16 @@ import LayoutConfig, { MainBlockConfigT } from 'presentation/type/LayoutConfig';
 
 const MAIN_BLOCK_INITIAL_CONFIG: MainBlockConfigT = {
     css: undefined,
-    isWithContainer: true,
 };
 
 @injectable()
 export default class UiGlobalController {
+    private readonly _privacyLock = new ReactiveState<LayoutConfig['isLocked']>(false);
+
+    private readonly _mainContentConfig = new ReactiveState<MainBlockConfigT>(
+        MAIN_BLOCK_INITIAL_CONFIG,
+    );
+
     public get isPrivacyLocked() {
         return this._privacyLock.state;
     }
@@ -26,17 +31,10 @@ export default class UiGlobalController {
     };
 
     public handleLayoutUpdateOnRouteChange = (config?: LayoutConfig): void => {
-        this.setIsPagePrivacyLocked(false);
         const { mainBlockConfig } = config || {};
 
         if (mainBlockConfig) {
             this.setMainBlockConfig(mainBlockConfig);
         }
     };
-
-    private readonly _privacyLock = new ReactiveState<LayoutConfig['isLocked']>(false);
-
-    private readonly _mainContentConfig = new ReactiveState<MainBlockConfigT>(
-        MAIN_BLOCK_INITIAL_CONFIG,
-    );
 }
