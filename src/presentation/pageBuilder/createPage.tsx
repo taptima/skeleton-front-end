@@ -35,12 +35,12 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
 ) {
     const { effectCallback, getInitialProps, withInitialProps, roles, layoutConfig } = options;
     let container = appContainerFactory.getInstance();
+    container.get(UiGlobalController).handleLayoutUpdateOnRouteChange(layoutConfig);
 
     const Page: NextPage<PageInitialPropsT> = (props) => {
         const { appData } = props;
         const { user, clientSideInitialAction } = useService(AppGlobalController);
-        const { setIsPagePrivacyLocked, handleLayoutUpdateOnRouteChange } =
-            useService(UiGlobalController);
+        const { setIsPagePrivacyLocked } = useService(UiGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
 
         useEffect(() => {
@@ -60,8 +60,6 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
             if (!isPageAllowedForUser) {
                 return;
             }
-
-            handleLayoutUpdateOnRouteChange(layoutConfig);
 
             if (effectCallback) {
                 effectCallback(container)
