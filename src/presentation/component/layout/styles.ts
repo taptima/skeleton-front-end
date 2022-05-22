@@ -14,5 +14,5 @@ export const Main = styled.main<MainBlockConfigT>`
     flex-direction: column;
     flex-grow: 1;
 
-    ${({ css: mainCss }) => mainCss}
+    ${({ theme, css: mainCss }) => mainCss && mainCss(theme)}
 `;

@@ -1,28 +1,48 @@
 import { FC } from 'react';
-import NextLink from 'next/link';
+import NextLink, { LinkProps } from 'next/link';
 import { TextPropsT } from 'presentation/component/common/typography/Text';
-import { ALink } from './styles';
+import { BaseLink } from './styles';
 
-type PropsT = TextPropsT & {
-    href: string;
-    isExternalLink?: boolean;
-    prefetch?: boolean;
-};
+type NextLinkPropsT = Omit<LinkProps, 'passHref' | 'as' | 'href'>;
+
+type PropsT = TextPropsT &
+    NextLinkPropsT & {
+        href: string;
+        isExternalLink?: boolean;
+    };
 
 const Link: FC<PropsT> = (props) => {
-    const { children, prefetch = false, isExternalLink, href, ...restProps } = props;
+    const {
+        children,
+        href,
+        isExternalLink,
+        replace,
+        scroll,
+        shallow,
+        prefetch = false,
+        locale,
+        ...restProps
+    } = props;
 
     if (isExternalLink) {
         return (
-            <ALink href={href} rel="noopener noreferrer" target="_blank" {...restProps}>
+            <BaseLink href={href} rel="noopener noreferrer" target="_blank" {...restProps}>
                 {children}
-            </ALink>
+            </BaseLink>
         );
     }
 
     return (
-        <NextLink href={href} passHref prefetch={prefetch}>
-            <ALink {...restProps}>{children}</ALink>
+        <NextLink
+            href={href}
+            passHref
+            replace={replace}
+            scroll={scroll}
+            shallow={shallow}
+            prefetch={prefetch}
+            locale={locale}
+        >
+            <BaseLink {...restProps}>{children}</BaseLink>
         </NextLink>
     );
 };

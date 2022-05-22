@@ -5,7 +5,7 @@ import useWindowResize from 'presentation/hook/windowSize/useWindowResize';
 type BreakpointKeyT = keyof typeof Breakpoint;
 
 const breakpointKeys = Object.keys(Breakpoint) as BreakpointKeyT[];
-const lastBreakpointKey = breakpointKeys.at(-1) as BreakpointKeyT;
+const lastBreakpointKey = breakpointKeys[breakpointKeys.length - 1] as BreakpointKeyT;
 
 export default function useBreakpoint(): Breakpoint {
     const [breakpoint, setBreakpoint] = useState(Breakpoint[lastBreakpointKey]);

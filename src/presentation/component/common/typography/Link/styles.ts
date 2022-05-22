@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Text from 'presentation/component/common/typography/Text';
 
 // eslint-disable-next-line import/prefer-default-export
-export const ALink = styled(Text)`
+export const BaseLink = styled(Text)`
     width: fit-content;
     transition: opacity ${({ theme }) => theme.transition.fast},
         transform ${({ theme }) => theme.transition.fast};
