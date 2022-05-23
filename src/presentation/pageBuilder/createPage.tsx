@@ -1,7 +1,7 @@
 import { ParsedUrlQuery } from 'querystring';
 import { ComponentType, useEffect } from 'react';
 import { NextPage } from 'next';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import appContainerFactory from 'container/AppContainer';
 import User from 'domain/entity/app/User';
 import isServer from 'helper/common/isServer';

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Global } from '@emotion/react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useService } from 'presentation/context/Container';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
 import globalCss from 'presentation/component/layout/common/globalCss';

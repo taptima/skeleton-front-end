@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import React, { ReactElement } from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { enableStaticRendering } from 'mobx-react';
+import { enableStaticRendering } from 'mobx-react-lite';
 import isServer from 'helper/common/isServer';
 import Layout from 'presentation/component/layout';
 import { ThemeProvider } from 'presentation/context/Theme';
