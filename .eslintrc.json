@@ -1,18 +1,20 @@
 {
     "extends": [
         "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
         "airbnb",
         "airbnb-typescript",
+        "plugin:jsx-a11y/recommended",
         "plugin:@next/next/recommended",
         "prettier"
     ],
-    "ignorePatterns": ["*.config.js"],
+    "ignorePatterns": ["*.config.js", "polyfills.js"],
     "env": {
         "browser": true,
         "node": true
     },
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "import", "jsx-a11y", "react", "react-hooks", "eslint-plugin-import"],
+    "plugins": ["@typescript-eslint", "import", "jsx-a11y", "react", "react-hooks", "es"],
     "parserOptions": {
         "project": "./tsconfig.json",
         "tsconfigRootDir": "."
@@ -47,6 +49,8 @@
         "no-plusplus": "off",
         "import/no-unresolved": "off",
         "react/require-default-props": "off",
+        "react/display-name": "off",
+        "react/no-unstable-nested-components": "error",
         "react/no-unused-prop-types": "warn",
         "react/function-component-definition": "off",
         "@typescript-eslint/no-unused-vars": "warn",
@@ -171,6 +175,10 @@
             }
         ],
         "@typescript-eslint/no-redeclare": "off",
-        "arrow-body-style": "off"
+        "arrow-body-style": "off",
+        "es/no-logical-assignment-operators": "error",
+        "es/no-numeric-separators": "error",
+        "es/no-promise-any": "error",
+        "es/no-weakrefs": "error"
     }
 }
