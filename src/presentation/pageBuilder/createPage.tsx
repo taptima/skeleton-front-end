@@ -11,6 +11,7 @@ import AppGlobalController from 'presentation/controller/AppGlobalController';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
 import { PageContextT } from 'presentation/type/Page';
 import LayoutConfig from 'presentation/type/LayoutConfig';
+import useBrowserLayoutEffect from 'presentation/hook/useBrowserLayoutEffect';
 
 type PageInitialPropsT = {
     appData?: Record<string, unknown>;
@@ -35,13 +36,17 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
 ) {
     const { effectCallback, getInitialProps, withInitialProps, roles, layoutConfig } = options;
     let container = appContainerFactory.getInstance();
-    container.get(UiGlobalController).handleLayoutUpdateOnRouteChange(layoutConfig);
 
     const Page: NextPage<PageInitialPropsT> = (props) => {
         const { appData } = props;
         const { user, clientSideInitialAction } = useService(AppGlobalController);
-        const { setIsPagePrivacyLocked } = useService(UiGlobalController);
+        const { handleLayoutUpdateOnRouteChange, setIsPagePrivacyLocked } =
+            useService(UiGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
+
+        useBrowserLayoutEffect(() => {
+            handleLayoutUpdateOnRouteChange(layoutConfig);
+        }, []);
 
         useEffect(() => {
             if (appData) {
