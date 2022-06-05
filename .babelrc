@@ -1,6 +1,7 @@
 {
     "env": {
         "development": {
+            "sourceMaps": true,
             "presets": ["next/babel"],
             "plugins": [
                 [
