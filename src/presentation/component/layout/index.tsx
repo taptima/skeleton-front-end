@@ -8,14 +8,13 @@ import { LayoutWrapper, Main } from './styles';
 
 const Layout: FC = observer((props) => {
     const { children } = props;
-    const { isPrivacyLocked, mainBlockConfig } = useService(UiGlobalController);
+    const { mainBlockConfig } = useService(UiGlobalController);
 
     return (
         <>
             <LayoutWrapper>
                 {/* Header */}
-                {isPrivacyLocked && <h1>Доступ закрыт</h1>}
-                {!isPrivacyLocked && <Main {...mainBlockConfig}>{children}</Main>}
+                <Main {...mainBlockConfig}>{children}</Main>
                 {/* Footer */}
             </LayoutWrapper>
             <Global styles={globalCss} />

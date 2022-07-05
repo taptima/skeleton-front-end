@@ -12,6 +12,7 @@ import UiGlobalController from 'presentation/controller/UiGlobalController';
 import { PageContextT } from 'presentation/type/Page';
 import LayoutConfig from 'presentation/type/LayoutConfig';
 import useBrowserLayoutEffect from 'presentation/hook/useBrowserLayoutEffect';
+import PrivatePage from 'presentation/component/page/private';
 
 type PageInitialPropsT = {
     appData?: Record<string, unknown>;
@@ -40,8 +41,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
     const Page: NextPage<PageInitialPropsT> = (props) => {
         const { appData } = props;
         const { user, clientSideInitialAction } = useService(AppGlobalController);
-        const { handleLayoutUpdateOnRouteChange, setIsPagePrivacyLocked } =
-            useService(UiGlobalController);
+        const { handleLayoutUpdateOnRouteChange } = useService(UiGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
 
         useBrowserLayoutEffect(() => {
@@ -66,7 +66,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
                 return;
             }
 
-            if (effectCallback) {
+            if (effectCallback && isPageAllowedForUser) {
                 effectCallback(container)
                     .then(() => {})
                     .catch((e) => {
@@ -75,11 +75,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
             }
         }, []);
 
-        useEffect(() => {
-            setIsPagePrivacyLocked(!isPageAllowedForUser);
-        }, [isPageAllowedForUser]);
-
-        return <PageComponent />;
+        return isPageAllowedForUser ? <PageComponent /> : <PrivatePage />;
     };
 
     if (getInitialProps || withInitialProps) {

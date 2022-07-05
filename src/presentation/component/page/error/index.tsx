@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import NextLink from 'next/link';
 import { HOME } from 'constant/route';
 import HttpStatusCode from 'constant/HttpStatusCode';
 import { Wrapper, Title, Link } from './styles';
@@ -19,9 +18,7 @@ const ErrorPage: FC<PropsT> = (props) => {
     return (
         <Wrapper>
             <Title>{MAP_ERROR_TO_MESSAGE[statusCode] || 'Что-то пошло не так'}</Title>
-            <NextLink href={HOME} passHref>
-                <Link>На главную</Link>
-            </NextLink>
+            <Link href={HOME}>На главную</Link>
         </Wrapper>
     );
 };
