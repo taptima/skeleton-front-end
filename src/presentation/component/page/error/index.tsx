@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { HOME } from 'constant/route';
 import HttpStatusCode from 'constant/HttpStatusCode';
 import { Wrapper, Title, Link } from './styles';

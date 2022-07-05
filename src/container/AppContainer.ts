@@ -23,4 +23,6 @@ class AppContainer extends Container {
 
 const appContainerFactory = new ContainerFactory(AppContainer);
 
+export type ContainerT = ReturnType<typeof appContainerFactory.getInstance>
+
 export default appContainerFactory;
