@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import { ComponentType, FC } from 'react';
+import { ComponentType } from 'react';
 import { NextPage } from 'next';
 import { observer } from 'mobx-react-lite';
 import appContainerFactory, { ContainerT } from 'container/AppContainer';

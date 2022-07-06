@@ -1,24 +1,12 @@
-import { createSSGPage, createSSGAction } from "presentation/pageBuilder/createSSGPage";
-import HomePage, { HomePagePropsT } from "presentation/component/page/home";
-import Controller from "presentation/component/page/home/Controller";
+import { createSSGPage, createSSGAction } from 'presentation/pageBuilder/createSSGPage';
+import StaticPage from 'presentation/component/page/static';
+import Controller from 'presentation/component/page/static/Controller';
 
-export default createSSGPage<HomePagePropsT>(HomePage, {
-    onPropsReceive: (props, container) => {
-        const { onPropsReceive } = container.get(Controller);
-        console.log('received props: ', props)
+export default createSSGPage(StaticPage, {});
 
-        onPropsReceive(props);
-    }
-})
-
-
-export const getStaticProps = createSSGAction<HomePagePropsT>(
-    async (container, nextPageContext) => {
-        const pageData = await container.get(Controller).initialAction();
-
-        return pageData;
-    }
-)
+export const getStaticProps = createSSGAction(async (container) => {
+    await container.get(Controller).initialAction();
+});
 
 // export const getStaticPaths = createPathListGenerator<{a: string}>(
 //     async (container, pathsContext) => {
