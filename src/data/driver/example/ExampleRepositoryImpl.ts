@@ -1,8 +1,8 @@
 import ExampleRepository from 'domain/repository/example/ExampleRepository';
-import ExampleStore from 'data/store/ExampleStore';
+import Store from 'data/driver/example/Store';
 
 export default class ExampleRepositoryImpl extends ExampleRepository {
-    private store = new ExampleStore();
+    private store = new Store();
 
     public getTitle(): string {
         return this.store.title;

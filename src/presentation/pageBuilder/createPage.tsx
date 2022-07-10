@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import { ComponentType } from 'react';
+import { ComponentType, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { observer } from 'mobx-react-lite';
 import appContainerFactory, { ContainerT } from 'container/AppContainer';
@@ -35,21 +35,25 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
     options: OptionsT<Q> = {},
 ) {
     const { effectCallback, getInitialProps, withInitialProps, roles, layoutConfig } = options;
-    let container = appContainerFactory.getInstance();
+    const container = appContainerFactory.getInstance();
 
     const Page: NextPage<PageInitialPropsT> = (props) => {
         const { appData } = props;
         const { user } = useService(AppGlobalController);
-        const { handleLayoutUpdateOnRouteChange } = useService(UiGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
+        const { handleLayoutUpdateOnRouteChange } = useService(UiGlobalController);
+        const [isAppDataHydrated, setIsAppDataHydrated] = useState(false);
+
+        if (!isAppDataHydrated && appData && !isServer()) {
+            container.hydrateData(appData);
+            setIsAppDataHydrated(true);
+        }
 
         useBrowserLayoutEffect(() => {
-            if (appData) {
-                container.hydrateData(appData);
-            }
-
             handleLayoutUpdateOnRouteChange(layoutConfig);
+        }, []);
 
+        useEffect(() => {
             if (effectCallback && isPageAllowedForUser) {
                 effectCallback(container)
                     .then(() => {})
@@ -64,8 +68,6 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
 
     if (getInitialProps || withInitialProps) {
         Page.getInitialProps = async (ctx: PageContextT<Q>) => {
-            container = appContainerFactory.getInstance();
-
             if (getInitialProps) {
                 await getInitialProps(container, ctx);
             }

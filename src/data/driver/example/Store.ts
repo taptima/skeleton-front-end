@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-export default class ExampleStore {
+export default class Store {
     public title = '';
 
     constructor() {

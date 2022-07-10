@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import { ComponentType, useEffect } from 'react';
+import { ComponentType, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import appContainerFactory, { ContainerT } from 'container/AppContainer';
 import User from 'domain/entity/app/User';
@@ -30,7 +30,7 @@ type OptionsT = {
     layoutConfig?: LayoutConfig;
 };
 
-export function createSSGPage(PageComponent: ComponentType, options: OptionsT): NextPage {
+export function createSSGPage(PageComponent: ComponentType, options: OptionsT = {}): NextPage {
     const { effectCallback, roles, layoutConfig } = options;
     const container = appContainerFactory.getInstance();
 
@@ -39,14 +39,18 @@ export function createSSGPage(PageComponent: ComponentType, options: OptionsT): 
         const { user } = useService(AppGlobalController);
         const { handleLayoutUpdateOnRouteChange } = useService(UiGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
+        const [isAppDataHydrated, setIsAppDataHydrated] = useState(false);
 
-        useEffect(() => {
+        if (!isAppDataHydrated && appData) {
             container.hydrateData(appData);
-        }, []);
+            setIsAppDataHydrated(true);
+        }
 
         useBrowserLayoutEffect(() => {
             handleLayoutUpdateOnRouteChange(layoutConfig);
+        }, []);
 
+        useEffect(() => {
             if (effectCallback && isPageAllowedForUser) {
                 effectCallback(container)
                     .then(() => {})

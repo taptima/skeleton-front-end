@@ -2,7 +2,7 @@ import { createSSGPage, createSSGAction } from 'presentation/pageBuilder/createS
 import StaticPage from 'presentation/component/page/static';
 import Controller from 'presentation/component/page/static/Controller';
 
-export default createSSGPage(StaticPage, {});
+export default createSSGPage(StaticPage);
 
 export const getStaticProps = createSSGAction(async (container) => {
     await container.get(Controller).initialAction();
