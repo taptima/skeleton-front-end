@@ -24,7 +24,11 @@ function App(props: AppProps): ReactElement {
 
     if (!isInitialActionDone) {
         if (isServer()) {
-            appInitialAction().then();
+            appInitialAction()
+                .then(() => {})
+                .catch((e) => {
+                    Logger.handleError('Unhandled error in appInitialAction', e);
+                });
         } else {
             clientSideInitialAction()
                 .then(() => {})

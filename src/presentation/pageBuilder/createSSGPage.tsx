@@ -12,6 +12,7 @@ import type {
     Redirect,
     GetStaticPathsResult,
 } from 'next';
+import isServer from 'helper/common/isServer';
 import Logger from 'util/Logger';
 import { useService } from 'presentation/context/Container';
 import AppGlobalController from 'presentation/controller/AppGlobalController';
@@ -41,7 +42,7 @@ export function createSSGPage(PageComponent: ComponentType, options: OptionsT = 
         const isPageAllowedForUser = !roles || roles.includes(user.role);
         const [isAppDataHydrated, setIsAppDataHydrated] = useState(false);
 
-        if (!isAppDataHydrated && appData) {
+        if (!isAppDataHydrated && appData && !isServer()) {
             container.hydrateData(appData);
             setIsAppDataHydrated(true);
         }
@@ -68,11 +69,14 @@ export function createSSGPage(PageComponent: ComponentType, options: OptionsT = 
 
 export const createSSGAction = <Q extends ParsedUrlQuery = ParsedUrlQuery>(
     onRequest: (container: ContainerT, nextPageContext: GetStaticPropsContext<Q>) => Promise<void>,
-    revalidate?: number | boolean,
-    redirect?: Redirect,
-    notFound?: true,
+    config?: {
+        revalidate?: number | boolean;
+        redirect?: Redirect;
+        notFound?: true;
+    },
 ): GetStaticProps<StaticPageInitialPropsT, Q> => {
     return async function getStaticProps(context) {
+        const { revalidate, notFound, redirect } = config || {};
         const container = appContainerFactory.getInstance();
         await onRequest(container, context);
 
