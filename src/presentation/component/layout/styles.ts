@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import { MainBlockConfigT } from 'presentation/type/LayoutConfig';
 
 export const LayoutWrapper = styled.div`
-    --main-gutter: 30px;
-
     display: flex;
     flex-direction: column;
     min-height: 100vh;
