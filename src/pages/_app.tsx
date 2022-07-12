@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import React, { ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { enableStaticRendering } from 'mobx-react-lite';
