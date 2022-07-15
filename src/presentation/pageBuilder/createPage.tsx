@@ -69,7 +69,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
     if (getInitialProps || withInitialProps) {
         Page.getInitialProps = async (ctx: PageContextT<Q>) => {
             if (getInitialProps) {
-                await getInitialProps(container, ctx);
+                 await getInitialProps(container, ctx);
             }
 
             if (!isServer()) {

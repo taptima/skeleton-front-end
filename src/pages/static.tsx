@@ -5,6 +5,10 @@ import Controller from 'presentation/component/page/static/Controller';
 export default createSSGPage(StaticPage);
 
 export const getStaticProps = createSSGAction(async (container) => {
+    await new Promise((resolve) => {
+        setTimeout(resolve, 3500)
+    })
+
     await container.get(Controller).initialAction();
 });
 

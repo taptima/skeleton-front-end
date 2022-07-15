@@ -1,22 +1,23 @@
 import { FC } from 'react';
 import Link from "presentation/component/common/typography/Link";
+import { Wrapper } from './styles';
 
-const HomePage: FC = () => {
+const TestPage: FC = () => {
     return (
-        <div>
-            <h1>Home page</h1>
+        <Wrapper>
+            test
             <br />
             <br />
-            <Link href="/long-sync" >
-                to long action page
+            <Link href="/">
+                back home
             </Link>
             <br />
             <br />
             <Link href="/static">
                 to static
             </Link>
-        </div>
+        </Wrapper>
     );
 };
 
-export default HomePage;
+export default TestPage;
