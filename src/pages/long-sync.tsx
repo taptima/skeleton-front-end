@@ -4,9 +4,9 @@ import TestPage from 'presentation/component/page/test';
 export default createPage(TestPage, {
     getInitialProps: async () => {
         console.log('getInitialProps start');
-        for (let i = 0; i < 4e9; i++) {
-            i++;
-        }
+        await new Promise((resolve) => {
+            setTimeout(resolve, 3500)
+        })
         console.log('getInitialProps finish');
     },
 });

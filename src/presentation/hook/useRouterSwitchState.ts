@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import isServer from 'helper/common/isServer';
 
+
 export default function useRouterSwitchState() {
     const router = useRouter();
-    const [isPageLoading, setIsPageLoading] = useState(false);
+    const [state, setState] = useState(false);
 
     useEffect(() => {
-        const handleRouteChangeStart = () => setIsPageLoading(true);
-        const handleRouteChangeComplete = () => setIsPageLoading(false);
+        const handleRouteChangeStart = () => setState(true);
+        const handleRouteChangeComplete = () => setState(false);
 
         router.events.on('routeChangeStart', handleRouteChangeStart);
         router.events.on('routeChangeComplete', handleRouteChangeComplete);
@@ -25,5 +26,5 @@ export default function useRouterSwitchState() {
         return false;
     }
 
-    return isPageLoading;
+    return state;
 }

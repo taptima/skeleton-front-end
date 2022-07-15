@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import NextLink from 'next/link';
+import Link from "presentation/component/common/typography/Link";
 
 const HomePage: FC = () => {
     return (
@@ -7,9 +7,14 @@ const HomePage: FC = () => {
             <h1>Home page</h1>
             <br />
             <br />
-            <NextLink href="/long-sync" passHref>
-                <a>to long action page</a>
-            </NextLink>
+            <Link href="/long-sync" >
+                to long action page
+            </Link>
+            <br />
+            <br />
+            <Link href="/static">
+                to static
+            </Link>
         </div>
     );
 };

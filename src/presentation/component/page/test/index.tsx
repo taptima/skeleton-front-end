@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import NextLink from 'next/link';
+import Link from "presentation/component/common/typography/Link";
 import { Wrapper } from './styles';
 
 const TestPage: FC = () => {
@@ -8,9 +8,14 @@ const TestPage: FC = () => {
             test
             <br />
             <br />
-            <NextLink href="/" passHref>
-                <a>back home</a>
-            </NextLink>
+            <Link href="/">
+                back home
+            </Link>
+            <br />
+            <br />
+            <Link href="/static">
+                to static
+            </Link>
         </Wrapper>
     );
 };
