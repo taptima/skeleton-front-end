@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import { ComponentType, useEffect, useState } from 'react';
+import { ComponentType, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import appContainerFactory, { ContainerT } from 'container/AppContainer';
 import User from 'domain/entity/app/User';
@@ -12,12 +12,12 @@ import type {
     Redirect,
     GetStaticPathsResult,
 } from 'next';
-import isServer from 'helper/common/isServer';
 import Logger from 'util/Logger';
 import { useService } from 'presentation/context/Container';
 import AppGlobalController from 'presentation/controller/AppGlobalController';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
 import LayoutConfig from 'presentation/type/LayoutConfig';
+import useHydrateData from 'presentation/hook/useHydrateData';
 import useBrowserLayoutEffect from 'presentation/hook/useBrowserLayoutEffect';
 import PrivatePage from 'presentation/component/page/private';
 
@@ -40,12 +40,8 @@ export function createSSGPage(PageComponent: ComponentType, options: OptionsT = 
         const { user } = useService(AppGlobalController);
         const { handleLayoutUpdateOnRouteChange } = useService(UiGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
-        const [isAppDataHydrated, setIsAppDataHydrated] = useState(false);
 
-        if (!isAppDataHydrated && appData && !isServer()) {
-            container.hydrateData(appData);
-            setIsAppDataHydrated(true);
-        }
+        useHydrateData(container, appData);
 
         useBrowserLayoutEffect(() => {
             handleLayoutUpdateOnRouteChange(layoutConfig);

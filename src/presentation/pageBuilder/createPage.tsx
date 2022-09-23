@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import { ComponentType, useEffect, useState } from 'react';
+import { ComponentType, useEffect } from 'react';
 import { NextPage } from 'next';
 import { observer } from 'mobx-react-lite';
 import appContainerFactory, { ContainerT } from 'container/AppContainer';
@@ -11,6 +11,7 @@ import AppGlobalController from 'presentation/controller/AppGlobalController';
 import UiGlobalController from 'presentation/controller/UiGlobalController';
 import { PageContextT } from 'presentation/type/PageContext';
 import LayoutConfig from 'presentation/type/LayoutConfig';
+import useHydrateData from 'presentation/hook/useHydrateData';
 import useBrowserLayoutEffect from 'presentation/hook/useBrowserLayoutEffect';
 import PrivatePage from 'presentation/component/page/private';
 
@@ -42,12 +43,8 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
         const { user } = useService(AppGlobalController);
         const isPageAllowedForUser = !roles || roles.includes(user.role);
         const { handleLayoutUpdateOnRouteChange } = useService(UiGlobalController);
-        const [isAppDataHydrated, setIsAppDataHydrated] = useState(false);
 
-        if (!isAppDataHydrated && appData && !isServer()) {
-            container.hydrateData(appData);
-            setIsAppDataHydrated(true);
-        }
+        useHydrateData(container, appData);
 
         useBrowserLayoutEffect(() => {
             handleLayoutUpdateOnRouteChange(layoutConfig);
@@ -61,7 +58,7 @@ export default function createPage<Q extends ParsedUrlQuery = ParsedUrlQuery>(
                         Logger.handleError('Unhandled error in "createPage" effect callback', e);
                     });
             }
-        }, []);
+        }, [isPageAllowedForUser]);
 
         return isPageAllowedForUser ? <PageComponent /> : <PrivatePage />;
     };
