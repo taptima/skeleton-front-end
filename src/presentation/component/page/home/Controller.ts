@@ -15,8 +15,8 @@ export default class Controller {
         return this.exampleRepository.getEntity();
     }
 
-    public staticInitialAction = async (): Promise<void> => {
-        this.exampleRepository.setTitle('Static page example');
-        this.exampleRepository.setEntity(new ExampleEntity('Static entity page example'));
+    public initialAction = async (): Promise<void> => {
+        this.exampleRepository.setTitle('Home page example');
+        this.exampleRepository.setEntity(new ExampleEntity('Home entity page example'));
     };
 }

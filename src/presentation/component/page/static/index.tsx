@@ -4,9 +4,15 @@ import { useService } from 'presentation/context/Container';
 import Controller from './Controller';
 
 const StaticPage: FC = observer(() => {
-    const { title } = useService(Controller);
+    const { title, entity } = useService(Controller);
 
-    return <div>{title}</div>;
+    return (
+        <div>
+            title: {title}
+            <br />
+            entity: {entity.doubleTitle}
+        </div>
+    );
 });
 
 export default StaticPage;

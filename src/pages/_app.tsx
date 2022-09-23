@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import React, { ReactElement, useState } from 'react';
+import { ReactElement, useRef } from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { enableStaticRendering } from 'mobx-react-lite';
@@ -20,9 +20,9 @@ function App(props: AppProps): ReactElement {
     const { Component, pageProps } = props;
     const container = appContainerFactory.getInstance();
     const { clientSideInitialAction, appInitialAction } = container.get(AppGlobalController);
-    const [isInitialActionDone, setIsInitialActionDone] = useState(false);
+    const isInitialActionDone = useRef<boolean>(false);
 
-    if (!isInitialActionDone) {
+    if (!isInitialActionDone.current) {
         if (isServer()) {
             appInitialAction()
                 .then(() => {})
@@ -37,7 +37,7 @@ function App(props: AppProps): ReactElement {
                 });
         }
 
-        setIsInitialActionDone(true);
+        isInitialActionDone.current = true;
     }
 
     return (

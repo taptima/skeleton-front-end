@@ -5,7 +5,7 @@ import Controller from 'presentation/component/page/static/Controller';
 export default createSSGPage(StaticPage);
 
 export const getStaticProps = createSSGAction(async (container) => {
-    await container.get(Controller).initialAction();
+    await container.get(Controller).staticInitialAction();
 });
 
 // export const getStaticPaths = createPathListGenerator<{a: string}>(
