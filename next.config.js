@@ -52,7 +52,7 @@ const nextConfig = {
 };
 
 /**
- * @type {import('@sentry/nextjs/dist/config/types').SentryWebpackPluginOptions}
+ * @type {import('@sentry/nextjs').SentryWebpackPluginOptions}
  **/
 const SentryWebpackPluginOptions = {
     include: '.next',
@@ -61,7 +61,16 @@ const SentryWebpackPluginOptions = {
     configFile: 'sentry.properties',
 };
 
-module.exports =
-    process.env.NODE_ENV === 'production' && Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN)
-        ? withSentryConfig(nextConfig, SentryWebpackPluginOptions)
-        : nextConfig;
+if (process.env.NODE_ENV === 'production' && Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN)) {
+    module.exports = withSentryConfig(
+        {
+            ...nextConfig,
+            sentry: {
+                hideSourceMaps: true,
+            },
+        },
+        SentryWebpackPluginOptions,
+    );
+} else {
+    module.exports = nextConfig;
+}
