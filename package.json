@@ -18,7 +18,9 @@
         "lint-styles": "stylelint --config .stylelintrc.json",
         "lint-styles-all": "yarn run lint-styles \"src/**/*.{css,scss,js,jsx,ts,tsx}\"",
         "lint": "yarn run lint-js-all && yarn run lint-styles-all && yarn format-all --check",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "graphql:build": "graphql-codegen --config codegen.yml",
+        "graphql:watch": "graphql-codegen --config codegen.yml -w"
     },
     "browserslist": [
         "last 1 Chrome major versions",
@@ -67,6 +69,9 @@
         "@babel/plugin-proposal-decorators": "^7.16.5",
         "@code-quality/stylelint-styled-components-config": "^1.7.0",
         "@emotion/babel-plugin": "^11.10.2",
+        "@graphql-codegen/cli": "^2.13.5",
+        "@graphql-codegen/typescript": "^2.7.3",
+        "@graphql-codegen/typescript-operations": "^2.5.3",
         "@next/eslint-plugin-next": "^12.3.1",
         "@types/node": "16",
         "@types/react": "^17.0.2",

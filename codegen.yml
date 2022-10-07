@@ -1,0 +1,11 @@
+overwrite: true
+schema: "schema.graphql"
+documents: "src/data/driver/**/*.graphql"
+generates:
+  src/data/driver/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+    hooks:
+      afterOneFileWrite:
+        - prettier --write

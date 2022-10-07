@@ -1,14 +1,14 @@
 import { fold as baseFold } from 'fp-ts/Either';
 import { Type } from 'io-ts';
-// import type GraphQL from 'data/driver/ApiClient/GraphQL';
+import type GraphQL from 'data/driver/ApiClient/GraphQL';
 import type REST from 'data/driver/ApiClient/REST';
 import Logger from 'util/Logger';
 import Credentials from './Credentials';
 
 export default abstract class AbstractApi {
-    // public abstract graphql: GraphQL;
-    //
-    // public abstract graphqlWithAuthorization: GraphQL;
+    public abstract graphql: GraphQL;
+
+    public abstract graphqlWithAuthorization: GraphQL;
 
     public abstract rest: REST;
 
