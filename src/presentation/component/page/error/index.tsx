@@ -4,6 +4,7 @@ import HttpStatusCode from 'constant/HttpStatusCode';
 import { Wrapper, Title, Link } from './styles';
 
 const MAP_ERROR_TO_MESSAGE: Record<HttpStatusCode, string> = {
+    [HttpStatusCode.Unauthorized]: 'Доступ запрещен',
     [HttpStatusCode.InternalServerError]: 'Возникла ошибка, попробуйте зайти позже',
     [HttpStatusCode.NotFound]: 'Страница не найдена или еще не создана',
 };

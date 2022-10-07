@@ -7,6 +7,9 @@ import ExampleRepository from 'domain/repository/example/ExampleRepository';
 // implementation
 import AppRepositoryImpl from 'data/driver/app/AppRepositoryImpl';
 import ExampleRepositoryImpl from 'data/driver/example/ExampleRepositoryImpl';
+// api client
+import ApiClient from 'data/driver/ApiClient';
+import AbstractApiClient from 'data/AbstractApiClient';
 
 class AppContainer extends Container {
     /**
@@ -22,6 +25,7 @@ class AppContainer extends Container {
      * Binds abstract classes to its implementation
      * */
     protected bindAll() {
+        this.bind(AbstractApiClient).to(ApiClient);
         this.bind(AppRepository).to(AppRepositoryImpl);
         this.bind(ExampleRepository).to(ExampleRepositoryImpl);
     }
