@@ -1,13 +1,18 @@
-import { AxiosInstance } from 'axios';
 import { fold as baseFold } from 'fp-ts/Either';
 import { Type } from 'io-ts';
-import Credentials from 'data/AbstractApi/Credentials';
+import type GraphQL from 'data/driver/ApiClient/GraphQL';
+import type REST from 'data/driver/ApiClient/REST';
 import Logger from 'util/Logger';
+import Credentials from './Credentials';
 
 export default abstract class AbstractApi {
-    public abstract http: AxiosInstance;
+    public abstract graphql: GraphQL;
 
-    public abstract httpWithAuthorization: AxiosInstance;
+    public abstract graphqlWithAuthorization: GraphQL;
+
+    public abstract rest: REST;
+
+    public abstract restWithAuthorization: REST;
 
     public abstract setCredentials(credentials: Credentials, isRemember?: boolean): void;
 

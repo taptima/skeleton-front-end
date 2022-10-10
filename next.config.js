@@ -28,6 +28,12 @@ const nextConfig = {
             loader: 'svg-sprite-loader',
         });
 
+        config.module.rules.push({
+            test: /\.graphql$/,
+            loader: 'graphql-tag/loader',
+            exclude: /node_modules/,
+        });
+
         config.module.rules = config.module.rules.map((rule) => {
             const { use } = rule;
 
