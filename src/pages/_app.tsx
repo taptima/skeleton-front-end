@@ -9,12 +9,13 @@ import Logger from 'util/Logger';
 import Layout from 'presentation/component/layout';
 import { ThemeProvider } from 'presentation/context/Theme';
 import { AppContextProvider } from 'presentation/context/Container';
+import ContextComposer from 'presentation/context/ContextComposer';
 import AppGlobalController from 'presentation/controller/AppGlobalController';
+import Seo from 'presentation/component/layout/Seo';
 
 enableStaticRendering(isServer());
 
-const TITLE = 'Title';
-const DESCRIPTION = 'Description';
+const APP_PROVIDERS = [ThemeProvider, AppContextProvider];
 
 function App(props: AppProps): ReactElement {
     const { Component, pageProps } = props;
@@ -48,16 +49,13 @@ function App(props: AppProps): ReactElement {
                     name="viewport"
                     content="width=device-width, initial-scale=1, maximum-scale=5"
                 />
-                <meta name="description" key="description" content={DESCRIPTION} />
-                <title>{TITLE}</title>
             </Head>
-            <ThemeProvider>
-                <AppContextProvider>
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
-                </AppContextProvider>
-            </ThemeProvider>
+            <ContextComposer components={APP_PROVIDERS}>
+                <Seo />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </ContextComposer>
         </>
     );
 }

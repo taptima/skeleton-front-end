@@ -3,10 +3,8 @@ import ContainerFactory from 'framework/ContainerFactory';
 // repository
 import SerializableRepository from 'framework/SerializableRepository';
 import AppRepository from 'domain/repository/app/AppRepository';
-import ExampleRepository from 'domain/repository/example/ExampleRepository';
 // implementation
 import AppRepositoryImpl from 'data/driver/app/AppRepositoryImpl';
-import ExampleRepositoryImpl from 'data/driver/example/ExampleRepositoryImpl';
 // api client
 import ApiClient from 'data/driver/ApiClient';
 import AbstractApiClient from 'data/AbstractApiClient';
@@ -15,10 +13,9 @@ class AppContainer extends Container {
     /**
      * Returns object to be serialized & hydrated
      * */
+    // eslint-disable-next-line class-methods-use-this
     protected getData(): Record<string, SerializableRepository> {
-        return {
-            exampleRepository: this.get(ExampleRepository),
-        };
+        return {};
     }
 
     /**
@@ -27,7 +24,6 @@ class AppContainer extends Container {
     protected bindAll() {
         this.bind(AbstractApiClient).to(ApiClient);
         this.bind(AppRepository).to(AppRepositoryImpl);
-        this.bind(ExampleRepository).to(ExampleRepositoryImpl);
     }
 }
 

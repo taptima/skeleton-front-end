@@ -4,6 +4,10 @@ const { withSentryConfig } = require('@sentry/nextjs');
  * @type {import('next').NextConfig}
  **/
 const nextConfig = {
+    i18n: {
+        locales: ['ru'],
+        defaultLocale: 'ru',
+    },
     images: {
         domains: [process.env.NEXT_PUBLIC_DOMAIN],
     },
